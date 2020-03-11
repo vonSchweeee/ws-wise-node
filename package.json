@@ -1,0 +1,41 @@
+{
+  "name": "br.com.aggin.lecni",
+  "version": "1.0.0",
+  "description": "Sistema de Alocação de Salas",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vonSchweeee/lecni-node.git"
+  },
+  "author": "José Vitor Almeida",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vonSchweeee/lecni-node/issues"
+  },
+  "homepage": "https://github.com/vonSchweeee/lecni-node#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^5.21.5",
+    "uuid": "^7.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
