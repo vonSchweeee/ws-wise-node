@@ -53,9 +53,9 @@ class AlocacaoSalaDAO {
 
     verificarConsistencia(id_sala, data_hora_inicio, data_hora_fim){
         return new Promise((resolve, reject) => {
-            AlocacaoSala.findAll({where: {
+            AlocacaoSala.findOne({where: {
                 id_sala: id_sala,
-                [Op.and] : [
+                [Op.or] : [
                     {
                         data_hora_inicio: {
                             [Op.between]: [data_hora_inicio, data_hora_fim]  
@@ -66,13 +66,21 @@ class AlocacaoSalaDAO {
                             [Op.between]: [data_hora_inicio, data_hora_fim]  
                         }
                     },
-                    {ativo: true}
-                ]
+                ],
+                ativo: true
             },
             order: ['data_hora_inicio']
             })
-            .then(alocacoes => resolve(alocacoes))
-            .catch(erro => reject(erro));
+            .then(alocacao => { 
+                if(alocacao == null){
+                    console.log(alocacao);
+                    resolve();
+                }else {
+                    reject('Alocação conflita em horário com outra alocação!');
+                }
+            })
+            .catch(erro => {reject(erro)
+            console.log('js foda bisho...') });
             });
     }
 }

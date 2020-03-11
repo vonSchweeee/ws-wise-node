@@ -24,9 +24,14 @@ class AlocacaoSalaController{
         return (req, res) => {
             const alocacao = req.body;
 
-            alocacaoSalaDAO.criarAlocacao(alocacao)
-            .then(result => res.status(201).json(result))
-            .catch(erro => res.status(400).json(erro));
+            alocacaoSalaDAO.verificarConsistencia(alocacao.id_sala, alocacao.data_hora_inicio, alocacao.data_hora_fim)
+            .then(result => {
+                alocacaoSalaDAO.criarAlocacao(alocacao)
+                .then(msg => res.status(201).json({msg}))
+                .catch(erro => console.log(erro))
+            }
+            )
+            .catch(erro => res.status(400).json({erro}));
         }
     }
 }
