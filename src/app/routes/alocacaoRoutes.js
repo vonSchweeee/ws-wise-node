@@ -7,7 +7,10 @@ module.exports = (app) => {
 
     app.use(alocacaoRoutes.auth, passport.authenticate('jwt', { session : false }));
 
-    app.get(alocacaoRoutes.rest_defaultFind, alocacaoSalaController.defaultFind());
+    app.route(alocacaoRoutes.rest_crud)
+        .get(alocacaoSalaController.defaultFind())
+        .post(alocacaoSalaController.criarAlocacao())
+        .put(alocacaoSalaController.alterarAlocacao())
+        .delete(alocacaoSalaController.desativarAlocacao());
 
-    app.post(alocacaoRoutes.rest_add, alocacaoSalaController.criarAlocacao());
 };

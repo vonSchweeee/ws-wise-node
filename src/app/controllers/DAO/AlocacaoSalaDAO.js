@@ -83,5 +83,33 @@ class AlocacaoSalaDAO {
             console.log('js foda bisho...') });
             });
     }
+
+    alterarAlocacao(novaAlocacao){
+        return new Promise((resolve, reject) => {
+            AlocacaoSala.update(novaAlocacao, {where: {id: novaAlocacao.id}})
+            .then(linhas => {
+                console.log(linhas);
+                if(linhas > 0 )
+                    resolve('Alocação alterada com sucesso!')
+                reject('Nenhuma alocação com o id informado encontrada!')
+            })
+            .catch(erro => {
+                reject(erro);
+            });
+        });
+    }
+
+    desativarAlocacao(id){
+        return new Promise((resolve, reject) => {
+            AlocacaoSala.update({ativo: false}, {where: {id: id}})
+            .then(linhas => {
+                if(linhas > 0){
+                    return resolve('Alocação desativada com sucesso!');
+                }
+                reject('Nenhuma alocação ativa com o id informado encontrado!');
+            })
+            .catch(erro => reject(erro));
+        });
+    }
 }
 module.exports = AlocacaoSalaDAO;

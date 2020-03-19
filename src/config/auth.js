@@ -24,7 +24,7 @@ module.exports = (app) => {
                        done(null, usuario);
                     }
                     else{
-                        done(null, false, {message: 'Senha inválida.'});
+                        done(null, false, {msg: 'Senha inválida.'});
                     }
                  });
                 })
@@ -55,10 +55,10 @@ module.exports = (app) => {
     });
 
     app.use(sessao({
-        secret: 'node alura',
-        genid: function(req) {
-            return uuid();
-        },
+        secret: 'gjnasasmnasjkmnas',
+        // genid: function(req) {
+        //     return uuid();
+        // },
         resave: false,
         saveUninitialized: false
     }));

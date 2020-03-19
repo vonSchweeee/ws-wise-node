@@ -23,11 +23,14 @@ class OrganizacaoController {
 
     findByDominio(){
         return (req, res) => {
-            const dominio = req.body.dominio;
+            const dominio = req.query.dominio;
             
             organizacaoDAO.findByDominio(dominio)
-            .then(organizacoes => res.status(200).json(organizacoes))
-            .catch(erro => res.status(400).json(erro));
+            .then(organizacoes => { 
+                res.status(200).json(organizacoes)
+                console.log(res)})
+            .catch(erro => { res.status(400).json(erro)
+            console.log(erro)});
         };
     }
 }

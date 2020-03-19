@@ -6,7 +6,7 @@ class AlocacaoSalaController{
         return {
             auth: '/rest*',
             rest_defaultFind: '/rest/alocacao/find',
-            rest_add: '/rest/alocacao/add'
+            rest_crud: '/rest/alocacao/',
         };
     }
     defaultFind(){
@@ -33,6 +33,26 @@ class AlocacaoSalaController{
             )
             .catch(erro => res.status(400).json({erro}));
         }
+    }
+
+    alterarAlocacao(){
+        return (req, res) => {
+            const novaAlocacao = req.body;
+
+            alocacaoSalaDAO.alterarAlocacao(novaAlocacao)
+            .then(nsei => res.status(200).json({nsei}))
+            .catch(erro => res.status(400).json({erro}));
+        };
+    }
+
+    desativarAlocacao(){
+        return (req, res) => {
+            const id = req.body.id;
+
+            alocacaoSalaDAO.desativarAlocacao(id)
+            .then(msg => res.status(200).json({msg}))
+            .catch(erro => res.status(400).json({erro}));
+        };
     }
 }
 module.exports = AlocacaoSalaController;

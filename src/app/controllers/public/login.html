@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Entrar</title>
+</head>
+<body>
+    <p class="text">Entrar</p>
+    <p class="description">Use o email de sua corporação</p>
+    <form name="login">
+        <input type="email" id="email" name="email" placeholder="Email" onblur="validacaoEmail(login.email)" maxlength="60" size='65'>
+        <div id="msgemail"></div>
+        <input type="password" name="senha" placeholder="Senha" size="65">
+        <div id="msgsenha"></div>
+        <input id="btnLogin" type="submit" value="Entrar" method="POST">
+    </form>
+    <script>
+        var btnLogin = document.querySelector("#btnLogin");
+        btnLogin.addEventListener('click', (event) => {
+            var url = new URL('localhost:3000/login');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            
+            xhr.onreadystatechange = () => {
+                if (this.readyState == 4) {
+                    console.log('catapimbas');
+                    console.log(xhr.responseText);
+                }
+                else{
+                    console.log('aa');
+                }
+            }   
+            
+            xhr.send(`{
+                email:"ronaldo@wises.com.br",
+                senha:"123"
+            }`);
+        });
+    </script>
+</body>
+</html>

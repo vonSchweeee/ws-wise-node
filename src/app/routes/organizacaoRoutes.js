@@ -5,7 +5,7 @@ const passport = require('passport');
 module.exports = (app) => {
     const organizacaoRoutes = OrganizacaoController.routes();
 
-    app.use(organizacaoRoutes.auth, passport.authenticate('jwt', { session : false }));
+    app.use(organizacaoRoutes.rest_organizacoes_id, passport.authenticate('jwt', { session : false }));
     
     app.get(organizacaoRoutes.rest_organizacoes_id, organizacaoController.findById());
 

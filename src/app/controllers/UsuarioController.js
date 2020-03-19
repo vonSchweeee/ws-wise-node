@@ -5,7 +5,8 @@ const passport = require('passport');
 const jwtSecret = require('../../config/jwtConfig');
 const {validationResult } = require('express-validator');
 const UsuarioForm = require('./Form/UsuarioForm');
-const Usuario = require('../models/Usuario')
+const Usuario = require('../models/Usuario');
+// const templates = require('../views/templates');
 
 class UsuarioController {
 
@@ -50,11 +51,56 @@ class UsuarioController {
                 .catch(erro => res.status(400).json({erro})))
                 .catch(erro => res.status(400).json({erro}));
             }
-        }
+        };
     }
+
+    // login(){
+    //     return (req, res) => {
+    //         res.marko(templates.home.login);
+    //     };
+    // }
 
     doLogin(){
         return (req, res, next) => {
+            console.log(req.body);
+            passport.authenticate('login', {session: false}, (erro, usuario, info) => {
+                if(info) {
+                    if(info.message == 'Missing credentials'){
+                        return res.status(404).json(info);
+                    }
+                    return res.status(400).json(info);
+                }
+                if(erro) {
+                    return res.status(500).json(erro);
+                }
+                
+                req.login(usuario, (erro) => {
+                    if(erro) {
+                        return next(erro);
+                    }
+                    else {
+                        const body = {
+                            id: usuario.id,
+                            idOrganizacao: usuario.id_organizacao,
+                            nome: usuario.nome,
+                            email: usuario.email
+                        }
+                        const token = jwt.sign({usuario: body}, jwtSecret.secret, {expiresIn: 3200});
+                        return res.status(200).json(
+                            {
+                            token: token
+                            }
+                        );
+                    }
+
+                });
+            })(req, res, next);
+        
+        };
+    }
+    webLogin(){
+        return (req, res, next) => {
+            const usuario = req.body;
             passport.authenticate('login', {session: false}, (erro, usuario, info) => {
                 if(info) {
                     console.log('info: ' + info);
@@ -75,10 +121,9 @@ class UsuarioController {
                             idOrganizacao: usuario.id_organizacao,
                             nome: usuario.nome,
                             email: usuario.email
-                        }
+                        };
                         const token = jwt.sign({usuario: body}, jwtSecret.secret, {expiresIn: 3200});
-
-                        return res.status(200).json(
+                        return res.marko(templates.home.home,
                             {
                             token: token
                             }
@@ -87,10 +132,8 @@ class UsuarioController {
 
                 });
             })(req, res, next);
-        
-        }
+        };
     }
-
     home(){
         return (req, resp) => {
             resp.send('aaaa');

@@ -63,7 +63,6 @@ class UsuarioDAO {
 
     validaSenha(senha, senhaHash){
         return bcrypt.compare(senha, senhaHash).then((res) => {
-            console.log(res);
             return res;
         })
         .catch(erro => reject(erro));
