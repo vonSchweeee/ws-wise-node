@@ -15,7 +15,7 @@ class SalaDAO {
                 where: {id_organizacao: id_organizacao}
             }).then(salas => { 
                 if(salas[0] == null){
-                    reject('Nenhuma organização encontrada.');
+                    reject('Nenhuma sala encontrada para a organização fornecida.');
                 }
                     resolve(resultado);
             }).catch(erro => reject(erro)); 

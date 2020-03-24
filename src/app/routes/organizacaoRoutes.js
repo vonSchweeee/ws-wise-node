@@ -1,11 +1,11 @@
 const OrganizacaoController = require('../controllers/OrganizacaoController');
 const organizacaoController = new OrganizacaoController();
-const passport = require('passport');
+const verifyJWT = require('../../config/auth-jwt');
 
 module.exports = (app) => {
     const organizacaoRoutes = OrganizacaoController.routes();
 
-    app.use(organizacaoRoutes.rest_organizacoes_id, passport.authenticate('jwt', { session : false }));
+    app.use(organizacaoRoutes.rest_organizacoes_id, verifyJWT);
     
     app.get(organizacaoRoutes.rest_organizacoes_id, organizacaoController.findById());
 

@@ -1,8 +1,7 @@
 const Usuario = require('../models/Usuario');
 const UsuarioController = require('../controllers/UsuarioController.js');
 const usuarioController = new UsuarioController();
-const passport = require('passport');
-var cors = require('cors');
+const verifyJWT = require('../../config/auth-jwt');
 // const path = require('../views/home/login/login.marko');
 
 module.exports = (app) => {
@@ -10,7 +9,7 @@ module.exports = (app) => {
 
     
 
-    app.use(usuarioRoutes.auth, passport.authenticate('jwt', { session : false }));
+    app.use(usuarioRoutes.auth, verifyJWT);
 
     app.get(usuarioRoutes.rest_by_organizacao_id, usuarioController.findByOrganizacaoId());
 

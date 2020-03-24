@@ -1,8 +1,7 @@
 const UsuarioDAO = require('./DAO/UsuarioDAO');
 const usuarioDAO = new UsuarioDAO();
 var jwt = require('jsonwebtoken');
-const passport = require('passport');
-const jwtSecret = require('../../config/jwtConfig');
+require("dotenv-safe").config();
 const {validationResult } = require('express-validator');
 const UsuarioForm = require('./Form/UsuarioForm');
 const Usuario = require('../models/Usuario');
@@ -62,40 +61,28 @@ class UsuarioController {
 
     doLogin(){
         return (req, res, next) => {
-            console.log(req.body);
-            passport.authenticate('login', {session: false}, (erro, usuario, info) => {
-                if(info) {
-                    if(info.message == 'Missing credentials'){
-                        return res.status(404).json(info);
-                    }
-                    return res.status(400).json(info);
-                }
-                if(erro) {
-                    return res.status(500).json(erro);
-                }
-                
-                req.login(usuario, (erro) => {
-                    if(erro) {
-                        return next(erro);
-                    }
-                    else {
+            const email = req.body.email;
+            const senha = req.body.senha;
+            const usuarioDAO = new UsuarioDAO();
+            Usuario.findOne({where:{email: email}})
+                .then(usuario => {
+                 usuarioDAO.validaSenha(senha, usuario.senha).then((senhaValidada) => {
+                    if(senhaValidada){
                         const body = {
                             id: usuario.id,
-                            idOrganizacao: usuario.id_organizacao,
+                            id_organizacao: usuario.id_organizacao,
                             nome: usuario.nome,
                             email: usuario.email
                         }
-                        const token = jwt.sign({usuario: body}, jwtSecret.secret, {expiresIn: 3200});
-                        return res.status(200).json(
-                            {
-                            token: token
-                            }
-                        );
+                        const token = jwt.sign(body, process.env.SECRET, {expiresIn: 3200});
+                        res.status(200).send({auth: true, token: token});
                     }
-
-                });
-            })(req, res, next);
-        
+                    else{
+                        res.status(401).json({msg: 'Senha inválida.'});
+                    }
+                 });
+                })
+                .catch(erro => next(erro));        
         };
     }
     webLogin(){

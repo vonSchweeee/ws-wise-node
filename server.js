@@ -1,13 +1,11 @@
 const express = require('express');
 const app = require('./src/config/custom-express');
+require('dotenv-safe').config();
 
 app.listen(3001, () => { 
     console.log("Servidor rodando na porta 3001");
     console.log('CORS ativado.');
 }); 
-
-const auth = require('./src/config/auth');
-auth(app);
 
 const routes = require('./src/app/routes/routes');
 routes(app);
