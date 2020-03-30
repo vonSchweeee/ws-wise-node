@@ -86,15 +86,18 @@ class AlocacaoSalaDAO {
 
     alterarAlocacao(novaAlocacao){
         return new Promise((resolve, reject) => {
+            console.log(novaAlocacao.id);
             AlocacaoSala.update(novaAlocacao, {where: {id: novaAlocacao.id}})
             .then(linhas => {
                 console.log(linhas);
-                if(linhas > 0 )
-                    resolve('Alocação alterada com sucesso!')
-                reject('Nenhuma alocação com o id informado encontrada!')
+                if(linhas[0] > 0 )
+                    return resolve('Alocação alterada com sucesso!')
+                else {
+                    return reject('Nenhuma alocação com o id informado foi alterada!')
+                }
             })
             .catch(erro => {
-                reject(erro);
+                return reject(erro);
             });
         });
     }

@@ -6,17 +6,16 @@ class AlocacaoSalaController{
         return {
             auth: '/rest*',
             rest_defaultFind: '/rest/alocacao/find',
-            rest_crud: '/rest/alocacao/',
+            rest_crud: '/rest/alocacao',
         };
     }
     defaultFind(){
         return (req, res) => {
-            const id_sala = req.body.id_sala;
-            const data_hora_inicio = req.body.data_hora_inicio;
-
+            const id_sala = req.query.idSala;
+            const data_hora_inicio = req.query.diaEscolhido;
             alocacaoSalaDAO.findBySalaIdAndDataHoraInicio(id_sala, data_hora_inicio)
             .then(alocacoes => res.status(200).json(alocacoes))
-            .catch(erro => res.status(200).json({erro}));
+            .catch(erro => res.status(200).json(erro));
         }
     }
 
@@ -30,8 +29,7 @@ class AlocacaoSalaController{
                 .then(msg => res.status(201).json({msg}))
                 .catch(erro => console.log(erro))
             }
-            )
-            .catch(erro => res.status(400).json({erro}));
+            ).catch(erro => res.status(400).json({erro}));
         }
     }
 
@@ -40,7 +38,7 @@ class AlocacaoSalaController{
             const novaAlocacao = req.body;
 
             alocacaoSalaDAO.alterarAlocacao(novaAlocacao)
-            .then(nsei => res.status(200).json({nsei}))
+            .then(msg => res.status(200).json({msg}))
             .catch(erro => res.status(400).json({erro}));
         };
     }
@@ -48,7 +46,7 @@ class AlocacaoSalaController{
     desativarAlocacao(){
         return (req, res) => {
             const id = req.body.id;
-
+            console.log(req.body);
             alocacaoSalaDAO.desativarAlocacao(id)
             .then(msg => res.status(200).json({msg}))
             .catch(erro => res.status(400).json({erro}));

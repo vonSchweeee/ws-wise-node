@@ -23,6 +23,11 @@ class UsuarioController {
             const id_organizacao = req.params.id;
             
             Usuario.findAll({
+                attributes: 
+                    ['id',
+                    'nome',
+                    'url_imagem']
+                ,
                 where: {
                     id_organizacao: id_organizacao
                 }
@@ -74,7 +79,7 @@ class UsuarioController {
                             nome: usuario.nome,
                             email: usuario.email
                         }
-                        const token = jwt.sign(body, process.env.SECRET, {expiresIn: 3200});
+                        const token = jwt.sign(body, process.env.SECRET, {expiresIn: 3600});
                         res.status(200).send({auth: true, token: token});
                     }
                     else{
@@ -84,47 +89,6 @@ class UsuarioController {
                 })
                 .catch(erro => next(erro));        
         };
-    }
-    webLogin(){
-        return (req, res, next) => {
-            const usuario = req.body;
-            passport.authenticate('login', {session: false}, (erro, usuario, info) => {
-                if(info) {
-                    console.log('info: ' + info);
-                    return res.status(400).json(info);
-                }
-                if(erro) {
-                    console.log(erro);
-                    return res.status(500).json(erro);
-                }
-                
-                req.login(usuario, (erro) => {
-                    if(erro) {
-                        return next(erro);
-                    }
-                    else {
-                        const body = {
-                            id: usuario.id,
-                            idOrganizacao: usuario.id_organizacao,
-                            nome: usuario.nome,
-                            email: usuario.email
-                        };
-                        const token = jwt.sign({usuario: body}, jwtSecret.secret, {expiresIn: 3200});
-                        return res.marko(templates.home.home,
-                            {
-                            token: token
-                            }
-                        );
-                    }
-
-                });
-            })(req, res, next);
-        };
-    }
-    home(){
-        return (req, resp) => {
-            resp.send('aaaa');
-        }
     }
 }
 

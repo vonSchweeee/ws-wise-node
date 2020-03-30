@@ -17,7 +17,7 @@ class SalaDAO {
                 if(salas[0] == null){
                     reject('Nenhuma sala encontrada para a organização fornecida.');
                 }
-                    resolve(resultado);
+                    resolve(salas);
             }).catch(erro => reject(erro)); 
         });
     }
